@@ -1,0 +1,76 @@
+name: restaurant_app
+services:
+  gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+    depends_on:
+      - auth-service
+      - restaurant-service
+      - order-service
+
+  auth-service:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/po_db
+      SPRING_DATASOURCE_USERNAME: user2
+      SPRING_DATASOURCE_PASSWORD: pass
+    depends_on:
+      db:
+        condition: service_healthy
+
+  restaurant-service:
+    build:
+      context: ./menu-service
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/po_db
+      SPRING_DATASOURCE_USERNAME: user2
+      SPRING_DATASOURCE_PASSWORD: pass
+    ports:
+      - "8083:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  order-service:
+    build:
+      context: ./order-service
+      dockerfile: Dockerfile
+    ports:
+      - "8084:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/po_db
+      SPRING_DATASOURCE_USERNAME: user2
+      SPRING_DATASOURCE_PASSWORD: pass
+      RESTAURANT_HOST: restaurant-service
+      AUTH_HOST: auth-service
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_DB: po_db
+      POSTGRES_USER: user2
+      POSTGRES_PASSWORD: pass
+    volumes:
+      - restaurant_data:/var/lib/postgresql/data
+    ports:
+      - "5424:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U user2 -d po_db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  restaurant_data:
