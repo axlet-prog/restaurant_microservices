@@ -13,7 +13,7 @@ services:
 
   auth-service:
     build:
-      context: ./api-gateway
+      context: ./auth-service
       dockerfile: Dockerfile
     ports:
       - "8082:8080"
