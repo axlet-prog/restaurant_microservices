@@ -1,12 +1,12 @@
 [submodule "api-gateway"]
 	path = api-gateway
-	url = git@github.com:axlet-prog/GatewayService.git
+	url = https://github.com/axlet-prog/GatewayService.git
 [submodule "auth-service"]
 	path = auth-service
-	url = git@github.com:axlet-prog/AuthService.git
+	url = https://github.com/axlet-prog/AuthService.git
 [submodule "order-service"]
 	path = order-service
-	url = git@github.com:axlet-prog/OrderService.git
+	url = https://github.com/axlet-prog/OrderService.git
 [submodule "menu-service"]
 	path = menu-service
-	url = git@github.com:axlet-prog/MenuService.git
+	url = https://github.com/axlet-prog/MenuService.git
