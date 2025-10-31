@@ -49,8 +49,8 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/po_db
       SPRING_DATASOURCE_USERNAME: user2
       SPRING_DATASOURCE_PASSWORD: pass
-      RESTAURANT_HOST: restaurant-service
-      AUTH_HOST: auth-service
+      RESTAURANT_URL: http://restaurant-service:8080
+      AUTH_URL: http://auth-service:8080
     depends_on:
       db:
         condition: service_healthy
